@@ -1,0 +1,252 @@
+<?php
+
+namespace App\Http\Controllers\Ajax;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+
+use App\Services\V1\Product\ProductService;
+use App\Repositories\Product\ProductCatalogueRepository;
+use App\Repositories\Product\ProductVariantRepository;
+use App\Repositories\Product\PromotionRepository;
+use App\Repositories\Attribute\AttributeRepository;
+
+use App\Models\Language;
+use Gloudemans\Shoppingcart\Facades\Cart;
+
+
+class ProductController extends Controller
+{
+    protected $productService;
+    protected $productCatalogueService;
+    protected $productCatalogueRepository;
+    protected $productVariantRepository;
+    protected $promotionRepository;
+    protected $attributeRepository;
+    protected $language;
+
+    public function __construct(
+        ProductCatalogueRepository $productCatalogueRepository,
+        ProductVariantRepository $productVariantRepository,
+        PromotionRepository $promotionRepository,
+        AttributeRepository $attributeRepository,
+        ProductService $productService,
+    ){
+        $this->productCatalogueRepository = $productCatalogueRepository;
+        $this->productVariantRepository = $productVariantRepository;
+        $this->promotionRepository = $promotionRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->productService = $productService;
+        $this->middleware(function($request, $next){
+            $locale = app()->getLocale(); // vn en cn
+            $language = Language::where('canonical', $locale)->first();
+            $this->language = $language->id;
+            return $next($request);
+        });
+    }
+
+    public function loadProductPromotion(Request $request){
+
+        $get = $request->input();
+
+        $loadClass = loadClass($get['model']);
+        
+        if($get['model'] == 'Product'){
+            $condition = [
+                ['tb2.language_id', '=', $this->language]
+            ];
+            if(isset($get['keyword']) && $get['keyword'] != ''){
+                $keywordCondition = ['tb2.name','LIKE', '%'.$get['keyword'].'%'];
+                array_push($condition, $keywordCondition);
+            }
+            $objects = $loadClass->findProductForPromotion($condition);
+        }else if($get['model'] == 'ProductCatalogue'){
+
+            $conditionArray['keyword'] = ($get['keyword']) ?? null;
+            $conditionArray['where'] = [
+                ['tb2.language_id', '=', $this->language]
+            ];
+
+            $objects = $loadClass->pagination(
+                [
+                    'product_catalogues.id', 
+                    'tb2.name', 
+                ], 
+                $conditionArray, 
+                20,
+                ['path' => 'product.catalogue.index'],  
+                ['product_catalogues.id', 'DESC'],
+                [
+                    ['product_catalogue_language as tb2','tb2.product_catalogue_id', '=' , 'product_catalogues.id']
+                ], 
+                []
+            );
+        }
+
+        return response()->json([
+            'model' => ($get['model']) ?? 'Product' ,
+            'objects' => $objects,
+        ]);
+    }
+
+    public function loadProductVoucher(Request $request){
+
+        $get = $request->input();
+
+        $loadClass = loadClass($get['model']);
+
+        $condition = [
+            ['tb2.language_id', '=', $this->language]
+        ];
+
+        if(isset($get['keyword']) && $get['keyword'] != ''){
+            $keywordCondition = ['tb2.name','LIKE', '%'.$get['keyword'].'%'];
+            array_push($condition, $keywordCondition);
+        }
+
+        $objects = $loadClass->findProductForVoucher($condition);
+
+        return response()->json([
+            'model' => ($get['model']) ?? 'Product' ,
+            'objects' => $objects,
+        ]);
+        
+    }
+   
+    public function loadVariant(Request $request){
+        $get = $request->input();
+        $attributeId = $get['attribute_id'];
+        
+        $attributeId = sortAttributeId($attributeId);
+        
+        $variant = $this->productVariantRepository->findVariant($attributeId, $get['product_id'], $get['language_id']);
+
+        $variantPromotion = $this->promotionRepository->findPromotionByVariantUuid($variant->uuid);
+        $variantPrice = getVariantPrice($variant, $variantPromotion);
+
+        return response()->json([
+            'variant' => $variant ,
+            'variantPrice' => $variantPrice,
+        ]);
+        
+    }
+    
+
+    public function filter(Request $request){
+
+        $products = $this->productService->filter($request);
+
+        $countProduct = $products->count();
+
+        $html = $this->renderFilterProduct($products);
+
+        return response()->json([
+            'data' => $html ,
+            'countProduct' => $countProduct
+        ]);
+    }
+
+    public function renderFilterProduct($products){
+        $html = '';
+        if (!is_null($products) && count($products)) {
+            $html .= '<div class="uk-grid uk-grid-medium">';
+            foreach ($products as $product) {
+                $name = $product->languages->first()->pivot->name;
+                $canonical = write_url($product->languages->first()->pivot->canonical);
+                $image = image($product->image);
+                $price = getPrice($product);
+                $catName = $product->product_catalogues->first()->languages->first()->pivot->name;
+                $review = getReview($product);
+                $total_lesson = $product->total_lesson;
+                $duration = $product->duration; 
+                $review['star'] = ($product->review_count == 0) ? '0' : $product->review_average / 5 * 100;
+                // $lecturer_image = $product->lecturers->image;
+                // $lecturer_name = $product->lecturers->name;
+                $ml = $product->ml;
+                $percent = $product->percent;
+                $madeIn = $product->made_in;
+
+                if (isset($product->attribute_concat)) {
+                    $attributes = substr($product->attribute_concat, 0, -1);
+                }
+
+                $html .= <<<HTML
+                    <div class="uk-width-1-1 uk-width-small-1-2 uk-width-medium-1-3 uk-width-large-1-4 mb25">
+                        <div class="product-item">
+                            <a href="{$canonical}" class="image img-scaledown img-zoomin">
+                                <img src="{$image}" alt="{$name}">
+                            </a>
+
+                            <div class="info">
+                                <div class="wine-info uk-flex uk-flex-center">
+                                    <span class="ml">{$ml}ml</span>
+                                    <span>{$percent}%</span>
+                                </div>
+
+                                <h3 class="title">
+                                    <a href="{$canonical}" title="{$name}">{$name}</a>
+                                </h3>
+
+                                <div class="price">
+                                    {$price['html']}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                HTML;
+            }
+            $html .= '</div>';
+            $html .= $products->links('pagination::bootstrap-4');
+        } else {
+            $html .= '<div class="no-result">Không có sản phẩm phù hợp</div>';
+        }
+        return $html;
+    }
+
+  
+
+    public function wishlist(Request $request){
+        $id = $request->input('id');
+        $wishlist = Cart::instance('wishlist')->content();
+        $itemIndex = $wishlist->search(function ($item, $rowId) use ($id) {
+            return $item->id === $id;
+        });
+        
+        $response['code'] = 0;
+        $response['message'] = '';
+        if ($itemIndex !== false) {
+            Cart::instance('wishlist')->remove($wishlist->keyBy('id')[$id]->rowId);
+
+            $response['code'] = 1;
+            $response['message'] = 'Sản phẩm đã được xóa khỏi danh sách yêu thích';
+
+        } else {
+            Cart::instance('wishlist')->add([
+                'id' => $id,
+                'name' => 'wishlist item',
+                'qty' => 1,
+                'price' => 0,
+            ]);
+
+            $response['code'] = 2;
+            $response['message'] = 'Đã thêm sản phẩm vào danh sách yêu thích';
+        }
+
+        return response()->json($response);
+    }
+
+    public function updateOrder(Request $request){
+        $payload['order'] =  $request->input('order');
+        unset($payload['id']);
+        $id = $request->input('id');
+        $class = loadClass($request->input('model'));
+        $update_order = $class->update($id, $payload);
+        return response()->json([
+            'response' => $update_order, 
+            'messages' => 'Cập nhật thứ tự thành công',
+            'code' => (!$update_order) ? 11 : 10,
+        ]);  
+    }
+    
+}
