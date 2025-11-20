@@ -1,4 +1,5 @@
-<?php  
+<?php
+
 namespace App\Http\ViewComposers;
 
 use Illuminate\View\View;
@@ -12,19 +13,16 @@ class CartComposer
 
     public function __construct(
         CartService $cartService,
-    ){
-       $this->cartService = $cartService;
+    ) {
+        $this->cartService = $cartService;
     }
 
     public function compose(View $view)
     {
-        
+
         $carts = Cart::instance('shopping')->content();
         $carts = $this->cartService->remakeCart($carts);
         $cartCaculate = $this->cartService->reCaculateCart();
         $view->with('cartShare', $cartCaculate);
     }
-
-   
-
 }

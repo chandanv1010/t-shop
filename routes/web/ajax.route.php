@@ -1,4 +1,5 @@
-<?php  
+<?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\V1\DashboardController;
 use App\Http\Controllers\Ajax\AttributeController as AjaxAttributeController;
@@ -20,8 +21,8 @@ use App\Http\Controllers\Frontend\SchoolCatalogueController;
 use App\Http\Controllers\Frontend\AdmissionCatalogueController;
 
 
-Route::group(['middleware' => ['admin','locale','backend_default_locale']], function () {
-    
+Route::group(['middleware' => ['admin', 'locale', 'backend_default_locale']], function () {
+
     Route::get('dashboard/index', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::post('ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus');
     Route::post('ajax/dashboard/changeStatusAll', [AjaxDashboardController::class, 'changeStatusAll'])->name('ajax.dashboard.changeStatusAll');
@@ -41,7 +42,7 @@ Route::group(['middleware' => ['admin','locale','backend_default_locale']], func
     Route::get('ajax/order/chart', [AjaxOrderController::class, 'chart'])->name('ajax.order.chart');
     Route::get('ajax/dashboard/findInformationObject', [AjaxDashboardController::class, 'findInformationObject'])->name('ajax.findInformationObject');
     Route::get('ajax/product/updateOrder', [AjaxProductController::class, 'updateOrder'])->name('ajax.updateOrder');
-    Route::post('ajax/review/changeStatus', [AjaxReviewController::class,'changeStatus'])->name('ajax.review.changeStatus');
+    Route::post('ajax/review/changeStatus', [AjaxReviewController::class, 'changeStatus'])->name('ajax.review.changeStatus');
     Route::get('ajax/post/updateOrder', [AjaxPostController::class, 'updateOrder'])->name('ajax.updateOrder');
     Route::post('ajax/excel/export', [AjaxExcelController::class, 'export'])->name('ajax.excel.export');
     Route::post('ajax/sort', [HandlerController::class, 'sort'])->name('ajax.sort');
@@ -68,7 +69,5 @@ Route::group(['middleware' => ['locale']], function () {
     Route::get('ajax/location/getLocation', [LocationController::class, 'getLocation'])->name('ajax.location.index');
     Route::get('ajax/post/video', [AjaxPostController::class, 'video'])->name('post.video');
     Route::post('ajax/product/wishlist', [AjaxProductController::class, 'wishlist'])->name('product.wishlist');
-   
-
+    Route::post('ajax/product/unwishlist', [AjaxProductController::class, 'unWishlist'])->name('product.unwishlist');
 });
-

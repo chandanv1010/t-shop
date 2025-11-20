@@ -15,6 +15,7 @@ use App\Repositories\Product\ProductRepository;
 
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Jenssegers\Agent\Facades\Agent;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Models\Post;
 
@@ -171,12 +172,32 @@ class ProductCatalogueController extends FrontendController
 
     public function wishlist(Request $request)
     {
-        $id = Cart::instance('wishlist')->content()->pluck('id')->toArray();
-        $products = $this->productRepository->findByIds($id, $this->language);
-        $productId = $products->pluck('id')->toArray();
-        if (count($productId) && !is_null($productId)) {
-            $products = $this->productService->combineProductAndPromotion($productId, $products);
+        $wishlistItems = Cart::instance('wishlist')->content();
+        $ids = $wishlistItems->pluck('id')->map(function ($id) {
+            return (int)$id;
+        })->filter()->values()->toArray();
+
+        $products = collect();
+        if (!empty($ids)) {
+            $products = $this->productRepository->findByIds($ids, $this->language);
+            $products = $this->productService->combineProductAndPromotion($ids, $products);
+            $products = $products->sortBy(function ($product) use ($ids) {
+                return array_search($product->id, $ids);
+            })->values();
         }
+
+        $perPage = 8;
+        $page = LengthAwarePaginator::resolveCurrentPage();
+        $wishlistProducts = new LengthAwarePaginator(
+            $products->forPage($page, $perPage),
+            $products->count(),
+            $perPage,
+            $page,
+            [
+                'path' => $request->url(),
+                'query' => $request->query(),
+            ]
+        );
 
         $config = $this->config();
         $system = $this->system;
@@ -185,14 +206,17 @@ class ProductCatalogueController extends FrontendController
             'meta_keyword' => '',
             'meta_description' => '',
             'meta_image' => '',
-            'canonical' => write_url('tim-kiem')
+            'canonical' => write_url('yeu-thich')
         ];
-        return view('frontend.product.catalogue.search', compact(
-            'config',
-            'seo',
-            'system',
-            'products',
-        ));
+        $wishlistCount = Cart::instance('wishlist')->count();
+
+        return view('frontend.product.catalogue.wishlist', [
+            'config' => $config,
+            'seo' => $seo,
+            'system' => $system,
+            'products' => $wishlistProducts,
+            'wishlistCount' => $wishlistCount,
+        ]);
     }
 
     private function schema($productCatalogue, $products, $breadcrumb)
@@ -301,5 +325,4 @@ class ProductCatalogueController extends FrontendController
 
         ];
     }
-
 }
