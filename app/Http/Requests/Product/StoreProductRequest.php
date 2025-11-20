@@ -28,6 +28,7 @@ class StoreProductRequest extends FormRequest
             // 'lecturer_id' => 'gt:0',
             'canonical' => 'required|unique:routers',
             'product_catalogue_id' => 'gt:0',
+            'stock' => 'nullable|integer|min:0',
         ];
     }
 
@@ -41,6 +42,8 @@ class StoreProductRequest extends FormRequest
             'canonical.required' => 'Bạn chưa nhập vào ô đường dẫn',
             'canonical.unique' => 'Đường dẫn đã tồn tại, Hãy chọn đường dẫn khác',
             'product_catalogue_id.gt' => 'Bạn phải nhập vào danh mục cha',
+            'stock.integer' => 'Tồn kho phải là số nguyên.',
+            'stock.min' => 'Tồn kho không được âm.',
         ];
     }
 }

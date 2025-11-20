@@ -21,6 +21,7 @@ class Product extends Model
         'user_id',
         'product_catalogue_id',
         'price',
+        'stock',
         'made_in',
         'code',
         'attributeCatalogue',
@@ -48,60 +49,67 @@ class Product extends Model
 
     protected $table = 'products';
 
-    public function languages(){
-        return $this->belongsToMany(Language::class, 'product_language' , 'product_id', 'language_id')
-        ->withPivot(
-            'name',
-            'canonical',
-            'meta_title',
-            'meta_keyword',
-            'meta_description',
-            'description',
-            'content',
-            'url',
-        )->withTimestamps();
+    public function languages()
+    {
+        return $this->belongsToMany(Language::class, 'product_language', 'product_id', 'language_id')
+            ->withPivot(
+                'name',
+                'canonical',
+                'meta_title',
+                'meta_keyword',
+                'meta_description',
+                'description',
+                'content',
+                'url',
+            )->withTimestamps();
     }
 
-    
-    public function product_catalogues(){
-        return $this->belongsToMany(ProductCatalogue::class, 'product_catalogue_product' , 'product_id', 'product_catalogue_id');
+
+    public function product_catalogues()
+    {
+        return $this->belongsToMany(ProductCatalogue::class, 'product_catalogue_product', 'product_id', 'product_catalogue_id');
     }
 
-    public function product_variants(){
+    public function product_variants()
+    {
         return $this->hasMany(ProductVariant::class, 'product_id', 'id');
     }
 
-    public function promotions(){
-        return $this->belongsToMany(Promotion::class, 'promotion_product_variant' , 'product_id', 'promotion_id')
-        ->withPivot(
-            'variant_uuid',
-            'model',
-        )->withTimestamps();
+    public function promotions()
+    {
+        return $this->belongsToMany(Promotion::class, 'promotion_product_variant', 'product_id', 'promotion_id')
+            ->withPivot(
+                'variant_uuid',
+                'model',
+            )->withTimestamps();
     }
 
 
-    public function orders(){
-        return $this->belongsToMany(Order::class, 'order_product' , 'product_id', 'order_id')
-        ->withPivot(
-            'uuid',
-            'name',
-            'qty',
-            'price',
-            'priceOriginal',
-            'option',
-        );
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_product', 'product_id', 'order_id')
+            ->withPivot(
+                'uuid',
+                'name',
+                'qty',
+                'price',
+                'priceOriginal',
+                'option',
+            );
     }
 
-    public function reviews(){
+    public function reviews()
+    {
         return $this->morphMany(Review::class, 'reviewable');
     }
 
-    public function sellers(){
+    public function sellers()
+    {
         return $this->belongsTo(Customer::class, 'seller_id', 'id');
     }
 
-    public function lecturers(){
+    public function lecturers()
+    {
         return $this->belongsTo(Lecturer::class, 'lecturer_id', 'id');
     }
-    
 }

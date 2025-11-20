@@ -1,4 +1,4 @@
-<?php   
+<?php
 return [
     'review' => [
         'index' => [
@@ -163,7 +163,7 @@ return [
         'delete' => [
             'title' => 'Xóa thuộc tính'
         ],
-    
+
     ],
     'product' => [
         'index' => [
@@ -183,6 +183,7 @@ return [
         'code' => 'Mã sản phẩm',
         'made_in' => 'Xuất xứ',
         'price' => 'Giá bán sản phẩm',
+        'stock' => 'Tồn kho',
     ],
     'postCatalogue' => [
         'index' => [
@@ -231,7 +232,7 @@ return [
         'permission' => [
             'title' => 'Cập nhật quyền'
         ],
-        
+
     ],
     'customerCatalogue' => [
         'index' => [
@@ -277,7 +278,7 @@ return [
         'delete' => [
             'title' => 'Xóa Quyền'
         ],
-        
+
     ],
     'language' => [
         'index' => [
