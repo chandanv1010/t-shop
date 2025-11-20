@@ -1,4 +1,5 @@
-<?php  
+<?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\AuthController;
 use App\Http\Controllers\Frontend\CustomerController;
@@ -36,15 +37,27 @@ Route::middleware(['customer_auth'])->group(function () {
     Route::get('/tai-khoan/thay-doi-mat-khau.html', [CustomerController::class, 'changePassword'])
         ->name('customer.password');
 
+    // Trang lịch sử đơn hàng
+    Route::get('/tai-khoan/lich-su-don-hang.html', [CustomerController::class, 'historyOrder'])
+        ->name('customer.order');
+
+    // Lịch sử giao dịch điểm
+    Route::get('/tai-khoan/lich-su-giao-dich.html', [CustomerController::class, 'pointHistory'])
+        ->name('customer.point.history');
+
+    // Chi tiết đơn hàng
+    Route::get('/tai-khoan/don-hang/{code}.html', [CustomerController::class, 'orderDetail'])
+        ->name('customer.order.detail');
+
     // Xử lý đổi mật khẩu
     Route::post('/tai-khoan/thay-doi-mat-khau.html', [CustomerController::class, 'updatePassword'])
         ->name('customer.password.update');
 
     Route::post('/ajax/customer/uploadAvatar', [CustomerController::class, 'uploadAvatar'])
-    ->name('customer.avatar.upload.ajax');
+        ->name('customer.avatar.upload.ajax');
 
     Route::post('ajax/cart/checkPoint', [CartController::class, 'checkPoint']);
-    
+
 
     /*
     |--------------------------------------------------------------------------

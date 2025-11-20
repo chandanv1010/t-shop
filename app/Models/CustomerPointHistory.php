@@ -9,7 +9,6 @@ class CustomerPointHistory extends Model
 {
     use HasFactory;
 
-
     protected $table = 'customer_point_history';
 
     protected $fillable = [
@@ -19,4 +18,9 @@ class CustomerPointHistory extends Model
         'type',
         'description',
     ];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }
