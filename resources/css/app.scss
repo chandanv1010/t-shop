@@ -1518,6 +1518,21 @@ ol li {
     font-weight: 600;
 }
 
+.addToWishlist {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+
+    i.fa-heart-o {
+        margin-right: 6px;
+    }
+
+    .number {
+        line-height: 1;
+        font-weight: 500;
+    }
+}
+
 .rate-container {
     margin-bottom: 25px;
 }

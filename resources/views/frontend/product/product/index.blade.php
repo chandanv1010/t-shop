@@ -4,12 +4,22 @@
     $prd_code = $product->code;
     $prd_model = $product->model ?? '';
 
-    $list_image = [...json_decode($product->album) ?? []];
+    $albumSource = is_array($product->album) ? $product->album : json_decode($product->album ?? '[]', true);
+    $list_image = array_values(array_filter(is_array($albumSource) ? $albumSource : []));
+
+    if (!empty($product->image)) {
+        array_unshift($list_image, $product->image);
+    }
+
+    $list_image = array_values(array_unique($list_image));
     $prd_href = write_url($product->canonical ?? '');
     $prd_description = $product->description ?? '';
     $prd_extend_des = $product->content ?? '';
     $price = getPrice($product);
     $stockQuantity = (int) ($product->stock ?? 0);
+    $wishlistItems = isset($wishlist) ? $wishlist : collect();
+    $wishlistIds = $wishlistItems->pluck('id')->toArray();
+    $isWishlisted = in_array($product->id, $wishlistIds);
 
 @endphp
 
@@ -25,8 +35,6 @@
         <section class="prddetail">
             <div class="uk-container uk-container-center">
                 <div class="uk-grid uk-grid-medium uk-grid-width-large-1-2">
-
-
                     <div class="product-gallery">
                         @if (isset($list_image) && !empty($list_image) && !is_null($list_image))
                             <div class="product-list_image">
@@ -37,7 +45,7 @@
                                         <?php foreach($list_image as $key => $val){  ?>
                                         <div class="swiper-slide" data-swiper-autoplay="2000">
                                             <a href="{{ $val }}" data-fancybox="my-group"
-                                                class="image img-cover img-v">
+                                                class="image img-contain img-v">
                                                 <img src="{{ image($val) }}" alt="<?php echo $val; ?>">
                                             </a>
                                         </div>
@@ -76,6 +84,14 @@
                                 <span class="uk-flex uk-flex-middle point-breacker">
                                     <img src="{{ asset('frontend/resources/img/b.png') }}" alt="point">
                                     <span class="number">100% Điểm đánh giá</span>
+                                </span>
+                                <span class="uk-flex uk-flex-middle addToWishlist {{ $isWishlisted ? 'active' : '' }}"
+                                    data-id="{{ $product->id }}" role="button" tabindex="0">
+                                    <i
+                                        class="fa wishlist-icon {{ $isWishlisted ? 'fa-heart wishlist-icon--active' : 'fa-heart-o' }}"></i>
+                                    <span class="number {{ $isWishlisted ? 'uk-text-danger' : 'uk-text-primary' }}">
+                                        {{ $isWishlisted ? 'Đã yêu thích' : 'Thêm vào yêu thích' }}
+                                    </span>
                                 </span>
                             </div>
                         </div>
@@ -140,10 +156,6 @@
                                             </a>
                                         </div>
                                     @endif
-                                    <div class="product-stock-info mt15">
-                                        <span>{{ __('messages.product.stock') }}:</span>
-                                        <strong>{{ number_format($stockQuantity) }}</strong>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -420,5 +432,15 @@
 
     .btn-out-stock .icon svg {
         stroke: #4a4a4a;
+    }
+
+    .addToWishlist {
+        cursor: pointer;
+        gap: 6px;
+    }
+
+    .addToWishlist .wishlist-icon--active,
+    .addToWishlist.active .wishlist-icon {
+        color: #c0392b;
     }
 </style>

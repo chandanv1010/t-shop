@@ -32,13 +32,13 @@ class ProductController extends Controller
         PromotionRepository $promotionRepository,
         AttributeRepository $attributeRepository,
         ProductService $productService,
-    ){
+    ) {
         $this->productCatalogueRepository = $productCatalogueRepository;
         $this->productVariantRepository = $productVariantRepository;
         $this->promotionRepository = $promotionRepository;
         $this->attributeRepository = $attributeRepository;
         $this->productService = $productService;
-        $this->middleware(function($request, $next){
+        $this->middleware(function ($request, $next) {
             $locale = app()->getLocale(); // vn en cn
             $language = Language::where('canonical', $locale)->first();
             $this->language = $language->id;
@@ -46,22 +46,23 @@ class ProductController extends Controller
         });
     }
 
-    public function loadProductPromotion(Request $request){
+    public function loadProductPromotion(Request $request)
+    {
 
         $get = $request->input();
 
         $loadClass = loadClass($get['model']);
-        
-        if($get['model'] == 'Product'){
+
+        if ($get['model'] == 'Product') {
             $condition = [
                 ['tb2.language_id', '=', $this->language]
             ];
-            if(isset($get['keyword']) && $get['keyword'] != ''){
-                $keywordCondition = ['tb2.name','LIKE', '%'.$get['keyword'].'%'];
+            if (isset($get['keyword']) && $get['keyword'] != '') {
+                $keywordCondition = ['tb2.name', 'LIKE', '%' . $get['keyword'] . '%'];
                 array_push($condition, $keywordCondition);
             }
             $objects = $loadClass->findProductForPromotion($condition);
-        }else if($get['model'] == 'ProductCatalogue'){
+        } else if ($get['model'] == 'ProductCatalogue') {
 
             $conditionArray['keyword'] = ($get['keyword']) ?? null;
             $conditionArray['where'] = [
@@ -70,27 +71,28 @@ class ProductController extends Controller
 
             $objects = $loadClass->pagination(
                 [
-                    'product_catalogues.id', 
-                    'tb2.name', 
-                ], 
-                $conditionArray, 
+                    'product_catalogues.id',
+                    'tb2.name',
+                ],
+                $conditionArray,
                 20,
-                ['path' => 'product.catalogue.index'],  
+                ['path' => 'product.catalogue.index'],
                 ['product_catalogues.id', 'DESC'],
                 [
-                    ['product_catalogue_language as tb2','tb2.product_catalogue_id', '=' , 'product_catalogues.id']
-                ], 
+                    ['product_catalogue_language as tb2', 'tb2.product_catalogue_id', '=', 'product_catalogues.id']
+                ],
                 []
             );
         }
 
         return response()->json([
-            'model' => ($get['model']) ?? 'Product' ,
+            'model' => ($get['model']) ?? 'Product',
             'objects' => $objects,
         ]);
     }
 
-    public function loadProductVoucher(Request $request){
+    public function loadProductVoucher(Request $request)
+    {
 
         $get = $request->input();
 
@@ -100,40 +102,40 @@ class ProductController extends Controller
             ['tb2.language_id', '=', $this->language]
         ];
 
-        if(isset($get['keyword']) && $get['keyword'] != ''){
-            $keywordCondition = ['tb2.name','LIKE', '%'.$get['keyword'].'%'];
+        if (isset($get['keyword']) && $get['keyword'] != '') {
+            $keywordCondition = ['tb2.name', 'LIKE', '%' . $get['keyword'] . '%'];
             array_push($condition, $keywordCondition);
         }
 
         $objects = $loadClass->findProductForVoucher($condition);
 
         return response()->json([
-            'model' => ($get['model']) ?? 'Product' ,
+            'model' => ($get['model']) ?? 'Product',
             'objects' => $objects,
         ]);
-        
     }
-   
-    public function loadVariant(Request $request){
+
+    public function loadVariant(Request $request)
+    {
         $get = $request->input();
         $attributeId = $get['attribute_id'];
-        
+
         $attributeId = sortAttributeId($attributeId);
-        
+
         $variant = $this->productVariantRepository->findVariant($attributeId, $get['product_id'], $get['language_id']);
 
         $variantPromotion = $this->promotionRepository->findPromotionByVariantUuid($variant->uuid);
         $variantPrice = getVariantPrice($variant, $variantPromotion);
 
         return response()->json([
-            'variant' => $variant ,
+            'variant' => $variant,
             'variantPrice' => $variantPrice,
         ]);
-        
     }
-    
 
-    public function filter(Request $request){
+
+    public function filter(Request $request)
+    {
 
         $products = $this->productService->filter($request);
 
@@ -142,12 +144,13 @@ class ProductController extends Controller
         $html = $this->renderFilterProduct($products);
 
         return response()->json([
-            'data' => $html ,
+            'data' => $html,
             'countProduct' => $countProduct
         ]);
     }
 
-    public function renderFilterProduct($products){
+    public function renderFilterProduct($products)
+    {
         $html = '';
         if (!is_null($products) && count($products)) {
             $html .= '<div class="uk-grid uk-grid-medium">';
@@ -159,7 +162,7 @@ class ProductController extends Controller
                 $catName = $product->product_catalogues->first()->languages->first()->pivot->name;
                 $review = getReview($product);
                 $total_lesson = $product->total_lesson;
-                $duration = $product->duration; 
+                $duration = $product->duration;
                 $review['star'] = ($product->review_count == 0) ? '0' : $product->review_average / 5 * 100;
                 // $lecturer_image = $product->lecturers->image;
                 // $lecturer_name = $product->lecturers->name;
@@ -204,23 +207,35 @@ class ProductController extends Controller
         return $html;
     }
 
-  
 
-    public function wishlist(Request $request){
-        $id = $request->input('id');
+
+    public function wishlist(Request $request)
+    {
+        $id = (int) $request->input('id');
         $wishlist = Cart::instance('wishlist')->content();
-        $itemIndex = $wishlist->search(function ($item, $rowId) use ($id) {
-            return $item->id === $id;
-        });
-        
-        $response['code'] = 0;
-        $response['message'] = '';
-        if ($itemIndex !== false) {
-            Cart::instance('wishlist')->remove($wishlist->keyBy('id')[$id]->rowId);
 
+        if ($id <= 0) {
+            return response()->json([
+                'code' => 0,
+                'message' => 'Sản phẩm không hợp lệ',
+                'wishlistTotal' => Cart::instance('wishlist')->count(),
+            ]);
+        }
+
+        $itemIndex = $wishlist->search(function ($item) use ($id) {
+            return (int)$item->id === $id;
+        });
+
+        $response = [
+            'code' => 0,
+            'message' => '',
+            'wishlistTotal' => Cart::instance('wishlist')->count(),
+        ];
+
+        if ($itemIndex !== false && isset($wishlist->keyBy('id')[$id])) {
+            Cart::instance('wishlist')->remove($wishlist->keyBy('id')[$id]->rowId);
             $response['code'] = 1;
             $response['message'] = 'Sản phẩm đã được xóa khỏi danh sách yêu thích';
-
         } else {
             Cart::instance('wishlist')->add([
                 'id' => $id,
@@ -233,20 +248,54 @@ class ProductController extends Controller
             $response['message'] = 'Đã thêm sản phẩm vào danh sách yêu thích';
         }
 
+        $response['wishlistTotal'] = Cart::instance('wishlist')->count();
+
         return response()->json($response);
     }
 
-    public function updateOrder(Request $request){
+    public function unWishlist(Request $request)
+    {
+        $id = (int) $request->input('id');
+        $wishlist = Cart::instance('wishlist')->content();
+
+        if ($id <= 0) {
+            return response()->json([
+                'code' => 0,
+                'message' => 'Sản phẩm không hợp lệ',
+                'wishlistTotal' => Cart::instance('wishlist')->count(),
+            ]);
+        }
+
+        $item = $wishlist->firstWhere('id', $id);
+
+        if (!$item) {
+            return response()->json([
+                'code' => 0,
+                'message' => 'Sản phẩm không tồn tại trong danh sách yêu thích',
+                'wishlistTotal' => Cart::instance('wishlist')->count(),
+            ]);
+        }
+
+        Cart::instance('wishlist')->remove($item->rowId);
+
+        return response()->json([
+            'code' => 1,
+            'message' => 'Đã xóa sản phẩm khỏi danh sách yêu thích',
+            'wishlistTotal' => Cart::instance('wishlist')->count(),
+        ]);
+    }
+
+    public function updateOrder(Request $request)
+    {
         $payload['order'] =  $request->input('order');
         unset($payload['id']);
         $id = $request->input('id');
         $class = loadClass($request->input('model'));
         $update_order = $class->update($id, $payload);
         return response()->json([
-            'response' => $update_order, 
+            'response' => $update_order,
             'messages' => 'Cập nhật thứ tự thành công',
             'code' => (!$update_order) ? 11 : 10,
-        ]);  
+        ]);
     }
-    
 }
