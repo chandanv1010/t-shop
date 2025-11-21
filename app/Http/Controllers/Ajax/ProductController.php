@@ -8,9 +8,11 @@ use Illuminate\Http\Request;
 
 use App\Services\V1\Product\ProductService;
 use App\Repositories\Product\ProductCatalogueRepository;
+use App\Repositories\Product\ProductRepository;
 use App\Repositories\Product\ProductVariantRepository;
 use App\Repositories\Product\PromotionRepository;
 use App\Repositories\Attribute\AttributeRepository;
+use App\Services\V1\Product\CompareService;
 
 use App\Models\Language;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -24,20 +26,26 @@ class ProductController extends Controller
     protected $productVariantRepository;
     protected $promotionRepository;
     protected $attributeRepository;
+    protected $productRepository;
+    protected $compareService;
     protected $language;
 
     public function __construct(
         ProductCatalogueRepository $productCatalogueRepository,
         ProductVariantRepository $productVariantRepository,
+        ProductRepository $productRepository,
         PromotionRepository $promotionRepository,
         AttributeRepository $attributeRepository,
         ProductService $productService,
+        CompareService $compareService,
     ) {
         $this->productCatalogueRepository = $productCatalogueRepository;
         $this->productVariantRepository = $productVariantRepository;
+        $this->productRepository = $productRepository;
         $this->promotionRepository = $promotionRepository;
         $this->attributeRepository = $attributeRepository;
         $this->productService = $productService;
+        $this->compareService = $compareService;
         $this->middleware(function ($request, $next) {
             $locale = app()->getLocale(); // vn en cn
             $language = Language::where('canonical', $locale)->first();
@@ -282,6 +290,132 @@ class ProductController extends Controller
             'code' => 1,
             'message' => 'Đã xóa sản phẩm khỏi danh sách yêu thích',
             'wishlistTotal' => Cart::instance('wishlist')->count(),
+        ]);
+    }
+
+    public function compareSearch(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $products = $this->productRepository->searchForCompare($keyword, $this->language);
+
+        $items = $products->map(function ($product) {
+            $price = $product->price > 0 ? convert_price($product->price, true) . '₫' : 'Liên hệ';
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'image' => image($product->image),
+                'code' => $product->code,
+                'price' => $price,
+            ];
+        });
+
+        return response()->json([
+            'data' => $items,
+        ]);
+    }
+
+    public function compareAdd(Request $request)
+    {
+        $productId = (int) $request->input('id');
+        $position = (int) $request->input('position', 0);
+
+        if ($productId <= 0 || $position < 0 || $position >= CompareService::MAX_ITEMS) {
+            return response()->json([
+                'code' => 0,
+                'message' => 'Thông tin không hợp lệ',
+            ], 422);
+        }
+
+        $product = $this->productRepository->findByIds([$productId], $this->language)->first();
+
+        if (!$product) {
+            return response()->json([
+                'code' => 0,
+                'message' => 'Không tìm thấy sản phẩm',
+            ], 404);
+        }
+
+        $cart = Cart::instance('compare');
+        $items = $cart->content();
+
+        $duplicate = $items->firstWhere('id', $productId);
+        if ($duplicate) {
+            $cart->remove($duplicate->rowId);
+            $items = $cart->content();
+        }
+
+        $slotItem = $items->first(function ($item) use ($position) {
+            return (int) data_get($item->options, 'position', -1) === $position;
+        });
+
+        if ($slotItem) {
+            $cart->remove($slotItem->rowId);
+        } elseif ($cart->count() >= CompareService::MAX_ITEMS) {
+            return response()->json([
+                'code' => 0,
+                'message' => 'Bạn chỉ có thể so sánh tối đa ' . CompareService::MAX_ITEMS . ' sản phẩm.',
+                'html' => $this->compareService->renderTable($this->language),
+                'compareTotal' => $cart->count(),
+            ]);
+        }
+
+        $cart->add([
+            'id' => $productId,
+            'name' => $product->name,
+            'qty' => 1,
+            'price' => 0,
+            'weight' => 0,
+            'options' => [
+                'position' => $position,
+            ],
+        ]);
+
+        return response()->json([
+            'code' => 1,
+            'message' => 'Đã thêm sản phẩm vào danh sách so sánh',
+            'html' => $this->compareService->renderTable($this->language),
+            'compareTotal' => $cart->count(),
+        ]);
+    }
+
+    public function compareRemove(Request $request)
+    {
+        $rowId = $request->input('rowId');
+        $position = (int) $request->input('position', -1);
+        $productId = (int) $request->input('id');
+
+        $cart = Cart::instance('compare');
+        $items = $cart->content();
+
+        if ($rowId) {
+            $cart->remove($rowId);
+        } elseif ($position >= 0) {
+            $slotItem = $items->first(function ($item) use ($position) {
+                return (int) data_get($item->options, 'position', -1) === $position;
+            });
+            if ($slotItem) {
+                $cart->remove($slotItem->rowId);
+            }
+        } elseif ($productId > 0) {
+            $item = $items->firstWhere('id', $productId);
+            if ($item) {
+                $cart->remove($item->rowId);
+            }
+        }
+
+        return response()->json([
+            'code' => 1,
+            'message' => 'Đã xóa sản phẩm khỏi danh sách so sánh',
+            'html' => $this->compareService->renderTable($this->language),
+            'compareTotal' => $cart->count(),
+        ]);
+    }
+
+    public function compareList()
+    {
+        return response()->json([
+            'html' => $this->compareService->renderTable($this->language),
+            'compareTotal' => Cart::instance('compare')->count(),
         ]);
     }
 
