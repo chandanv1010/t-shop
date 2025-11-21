@@ -1,5 +1,7 @@
 @php
     $wishlistCount = $wishlistCount ?? \Gloudemans\Shoppingcart\Facades\Cart::instance('wishlist')->count();
+    $compareCount = $compareCount ?? \Gloudemans\Shoppingcart\Facades\Cart::instance('compare')->count();
+    $cartCount = $cartCount ?? \Gloudemans\Shoppingcart\Facades\Cart::instance('shopping')->count();
 @endphp
 <header class="pc-header uk-visible-large"><!-- HEADER -->
     <x-top-search />
@@ -91,8 +93,8 @@
                             <a href="{{ route('product.wishlist.index') }}" class="p0" style="background: none;">
                                 <span class="uk-position-relative">
                                     <i class="fa fa-heart"></i>
-
-                                    <span class="wishlist-count uk-text-small uk-position-absolute" style="top: -6px; right: -2px;">
+                                    <span class="wishlist-count uk-text-small uk-position-absolute"
+                                        style="top: -6px; right: -2px;">
                                         {{ $wishlistCount }}
                                     </span>
                                 </span>
@@ -100,7 +102,7 @@
                             {{-- Nút giỏ hàng --}}
                             <a href="{{ route('cart.checkout') }}" class="btn btn-cart">
                                 <i class="fa fa-shopping-cart"></i>
-                                <span class="cart-count">{{ Cart::count() ?? 0 }}</span>
+                                <span class="cart-count">{{ $cartCount }}</span>
                             </a>
 
                         </div>

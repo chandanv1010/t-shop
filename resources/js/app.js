@@ -18,6 +18,7 @@ import io from 'socket.io-client';
 import '../vendor/frontend/resources/function.js';
 import '../vendor/frontend/core/library/product.js';
 import '../vendor/frontend/core/library/filter.js';
+import '../vendor/frontend/core/library/compare.js';
 // import '../vendor/frontend/core/library/cart.js';
 // import 'https://unpkg.com/swiper/swiper-bundle.min.js';
 
@@ -27,5 +28,5 @@ import '../vendor/frontend/core/library/filter.js';
 
 // window.Echo = new Echo({
 //     broadcaster: 'socket.io',
-//     host: 'http://laravelversion1.com:6001' 
+//     host: 'http://laravelversion1.com:6001'
 // });

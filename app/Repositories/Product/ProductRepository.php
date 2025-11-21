@@ -95,6 +95,9 @@ class ProductRepository extends BaseRepository
                 'products.attribute',
                 'products.variant',
                 'products.seller_id',
+                'products.ml',
+                'products.percent',
+                'products.warranty',
                 'tb2.name',
                 'tb2.description',
                 'tb2.content',
@@ -120,6 +123,32 @@ class ProductRepository extends BaseRepository
             ->where('products.publish', '=', 2)
             ->whereIn('products.id', $ids)
             ->get();
+    }
+
+
+    public function searchForCompare(?string $keyword, int $language_id, int $limit = 15)
+    {
+        $query = $this->model->select(
+            [
+                'products.id',
+                'products.image',
+                'products.price',
+                'products.code',
+                'tb2.name',
+                'tb2.canonical',
+            ]
+        )
+            ->join('product_language as tb2', 'tb2.product_id', '=', 'products.id')
+            ->where('tb2.language_id', '=', $language_id)
+            ->where('products.publish', '=', 2)
+            ->orderBy('products.id', 'desc')
+            ->limit($limit);
+
+        if (!empty($keyword)) {
+            $query->where('tb2.name', 'LIKE', '%' . $keyword . '%');
+        }
+
+        return $query->get();
     }
 
 

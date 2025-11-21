@@ -23,6 +23,11 @@ class CartComposer
         $carts = Cart::instance('shopping')->content();
         $carts = $this->cartService->remakeCart($carts);
         $cartCaculate = $this->cartService->reCaculateCart();
+        $wishlistCount = Cart::instance('wishlist')->count();
+        $compareCount = Cart::instance('compare')->count();
+
         $view->with('cartShare', $cartCaculate);
+        $view->with('wishlistCount', $wishlistCount);
+        $view->with('compareCount', $compareCount);
     }
 }

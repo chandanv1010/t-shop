@@ -11,6 +11,7 @@ use App\Services\V1\Product\ProductCatalogueService;
 use App\Services\V1\Product\ProductService;
 use App\Services\V1\Core\WidgetService;
 use App\Repositories\Product\ProductRepository;
+use App\Services\V1\Product\CompareService;
 
 
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -29,6 +30,7 @@ class ProductCatalogueController extends FrontendController
     protected $widgetService;
     protected $productRepository;
     protected $lecturerRepository;
+    protected $compareService;
 
     public function __construct(
         ProductCatalogueRepository $productCatalogueRepository,
@@ -36,12 +38,14 @@ class ProductCatalogueController extends FrontendController
         ProductService $productService,
         ProductRepository $productRepository,
         WidgetService $widgetService,
+        CompareService $compareService,
     ) {
         $this->productCatalogueRepository = $productCatalogueRepository;
         $this->productCatalogueService = $productCatalogueService;
         $this->productService = $productService;
         $this->widgetService = $widgetService;
         $this->productRepository = $productRepository;
+        $this->compareService = $compareService;
         parent::__construct();
     }
 
@@ -217,6 +221,28 @@ class ProductCatalogueController extends FrontendController
             'products' => $wishlistProducts,
             'wishlistCount' => $wishlistCount,
         ]);
+    }
+
+    public function compare(Request $request)
+    {
+        $comparePayload = $this->compareService->getPayload($this->language);
+
+        $config = $this->config();
+        $system = $this->system;
+        $seo = [
+            'meta_title' => 'So sánh sản phẩm',
+            'meta_keyword' => '',
+            'meta_description' => '',
+            'meta_image' => '',
+            'canonical' => write_url('so-sanh'),
+        ];
+
+        return view('frontend.product.catalogue.compare', array_merge($comparePayload, [
+            'config' => $config,
+            'seo' => $seo,
+            'system' => $system,
+            'maxCompareItems' => CompareService::MAX_ITEMS,
+        ]));
     }
 
     private function schema($productCatalogue, $products, $breadcrumb)
