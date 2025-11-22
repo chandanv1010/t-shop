@@ -45,13 +45,12 @@
                                         <?php foreach($list_image as $key => $val){  ?>
                                         <div class="swiper-slide" data-swiper-autoplay="2000">
                                             <a href="{{ $val }}" data-fancybox="my-group"
-                                                class="image img-contain img-v">
+                                                class="image img-cover img-v">
                                                 <img src="{{ image($val) }}" alt="<?php echo $val; ?>">
                                             </a>
                                         </div>
                                         <?php }  ?>
                                     </div>
-                                    <div class="swiper-pagination"></div>
                                 </div>
                                 <div class="swiper-container-thumbs">
                                     <div class="swiper-wrapper pic-list">
