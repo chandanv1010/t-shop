@@ -273,14 +273,13 @@
                 {{-- Sản phẩm liên quan --}}
                 @if (!is_null($productCatalogue->products))
                     <section class="categories-panel">
-                        <div class="uk-container uk-container-center">
-                            <h2 class="heading-1">
-                                <a href="#" onclick="return false;" title="Sản phẩm liên quan">Sản phẩm liên
-                                    quan</a>
-                            </h2>
+                        <h2 class="heading-1">
+                            <a href="#" onclick="return false;" title="Sản phẩm liên quan">Sản phẩm liên
+                                quan</a>
+                        </h2>
 
-                            <ul
-                                class="uk-list uk-clearfix uk-grid uk-grid-small uk-grid-width-1-2 uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-4">
+                        <ul
+                            class="uk-list uk-clearfix uk-grid uk-grid-small uk-grid-width-1-2 uk-grid-width-small-1-2 uk-grid-width-medium-1-3 uk-grid-width-large-1-4">
                                 @foreach ($productCatalogue->products as $key => $valPost)
                                     @php
                                         if ($key > 7) {
@@ -319,7 +318,6 @@
                                     </li>
                                 @endforeach
                             </ul>
-                        </div>
                     </section>
                 @endif
             </div>
