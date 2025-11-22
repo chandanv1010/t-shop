@@ -114,7 +114,7 @@
 </header><!-- .header -->
 <header class="mobile-header uk-hidden-large">
     <section class="upper">
-        <a class="moblie-menu-btn skin-1" href="#offcanvas" class="offcanvas" data-uk-offcanvas="{target:'#offcanvas'}">
+        <a class="moblie-menu-btn skin-1 offcanvas" href="#offcanvas" data-uk-offcanvas="{target:'#offcanvas'}">
             <span>Menu</span>
         </a>
         <div class="logo"><a href="" title="Logo"><img src="<?php echo $system['homepage_logo']; ?>" alt="Logo" /></a></div>
@@ -127,8 +127,81 @@
             <form action="<?php echo write_url('tim-kiem'); ?>" method="" class="uk-form form">
                 <input type="text" name="keyword" class="uk-width-1-1 input-text"
                     placeholder="Bạn muốn tìm gì hôm nay?" />
-                <button type="submit" name="" value="" class="btn-submit">Tìm kiếm</button>
+                <button type="submit" name="" value="" class="btn-submit">
+                    <img src="{{ asset('frontend/resources/img/icon/search-interface-symbol.png') }}" alt="Search">
+                </button>
             </form>
         </div>
     </section>
 </header><!-- .mobile-header -->
+
+<!-- Mobile Menu Offcanvas -->
+<div id="offcanvas" class="uk-offcanvas">
+    <div class="uk-offcanvas-bar uk-offcanvas-bar-flip mobile-menu-offcanvas">
+        <button class="uk-offcanvas-close mobile-menu-close" type="button">
+            <i class="fa fa-times"></i>
+        </button>
+        
+        <div class="mobile-menu-header">
+            <div class="mobile-menu-logo">
+                <a href="/" title="Logo">
+                    <img src="{{ $system['homepage_logo'] }}" alt="Logo" />
+                </a>
+            </div>
+        </div>
+
+        <nav class="mobile-menu-nav">
+            <ul class="uk-nav uk-nav-offcanvas mobile-menu-list">
+                {!! $menu['main-menu'] ?? '' !!}
+            </ul>
+        </nav>
+
+        <div class="mobile-menu-footer">
+            <div class="mobile-menu-actions">
+                @guest('customer')
+                    <a href="{{ route('customer.login') }}" class="mobile-menu-btn mobile-btn-login">
+                        <i class="fa fa-user"></i> Đăng nhập
+                    </a>
+                @endguest
+
+                @auth('customer')
+                    <a href="{{ route('customer.account') }}" class="mobile-menu-btn mobile-btn-account">
+                        <i class="fa fa-user-circle"></i> Tài khoản
+                    </a>
+                    <form action="{{ route('customer.logout') }}" method="POST" class="mobile-logout-form">
+                        @csrf
+                        <button type="submit" class="mobile-menu-btn mobile-btn-logout">
+                            <i class="fa fa-sign-out"></i> Đăng xuất
+                        </button>
+                    </form>
+                @endauth
+
+                <a href="{{ route('product.wishlist.index') }}" class="mobile-menu-btn mobile-btn-wishlist">
+                    <i class="fa fa-heart"></i> Yêu thích
+                    @if($wishlistCount > 0)
+                        <span class="mobile-badge">{{ $wishlistCount }}</span>
+                    @endif
+                </a>
+
+                <a href="{{ route('cart.checkout') }}" class="mobile-menu-btn mobile-btn-cart">
+                    <i class="fa fa-shopping-cart"></i> Giỏ hàng
+                    @if($cartCount > 0)
+                        <span class="mobile-badge">{{ $cartCount }}</span>
+                    @endif
+                </a>
+            </div>
+
+            <div class="mobile-menu-contact">
+                <div class="mobile-contact-item">
+                    <i class="fa fa-phone"></i>
+                    <a href="tel:{{ $system['contact_hotline'] }}">{{ $system['contact_hotline'] }}</a>
+                </div>
+                <div class="mobile-contact-item">
+                    <i class="fa fa-envelope"></i>
+                    <a href="mailto:{{ $system['contact_email'] }}">{{ $system['contact_email'] }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Mobile Menu -->

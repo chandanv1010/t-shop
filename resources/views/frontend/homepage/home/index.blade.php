@@ -202,12 +202,11 @@
                     </div>
                 </div>
                 @if(isset($cat->posts) && count($cat->posts))
+                <div class="slide-nav">
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                </div>
                 <div class="panel-body">
-                    <div class="slide-nav">
-                        <div class="swiper-button-prev"></div>
-                        <div class="swiper-button-next"></div>
-                    </div>
-
                     <div class="swiper-container">
                         <div class="swiper-wrapper">
                             @foreach($cat->posts as $keyPost => $post)

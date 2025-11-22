@@ -1,11 +1,11 @@
 {
   "resources/css/app.scss": {
-    "file": "assets/app-76fc032b.css",
+    "file": "assets/app-4da76772.css",
     "isEntry": true,
     "src": "resources/css/app.scss"
   },
   "resources/css/app_backend.scss": {
-    "file": "assets/app_backend-60b59e25.css",
+    "file": "assets/app_backend-ab017719.css",
     "isEntry": true,
     "src": "resources/css/app_backend.scss"
   },
@@ -15,7 +15,7 @@
     "src": "resources/js/app.backend.js"
   },
   "resources/js/app.js": {
-    "file": "assets/app-72e7b90f.js",
+    "file": "assets/app-f1318254.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
@@ -103,42 +103,6 @@
     "file": "assets/word_map-20e178bf.png",
     "src": "resources/vendor/backend/img/landing/word_map.png"
   },
-  "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-Black.ttf": {
-    "file": "assets/FZ Poppins-Black-3df4b8b0.ttf",
-    "src": "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-Black.ttf"
-  },
-  "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-Bold.ttf": {
-    "file": "assets/FZ Poppins-Bold-0211e38d.ttf",
-    "src": "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-Bold.ttf"
-  },
-  "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-ExtraBold.ttf": {
-    "file": "assets/FZ Poppins-ExtraBold-01abb522.ttf",
-    "src": "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-ExtraBold.ttf"
-  },
-  "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-ExtraLight.ttf": {
-    "file": "assets/FZ Poppins-ExtraLight-6a1c1fc3.ttf",
-    "src": "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-ExtraLight.ttf"
-  },
-  "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-Light.ttf": {
-    "file": "assets/FZ Poppins-Light-44661d9f.ttf",
-    "src": "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-Light.ttf"
-  },
-  "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-Medium.ttf": {
-    "file": "assets/FZ Poppins-Medium-138c14f9.ttf",
-    "src": "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-Medium.ttf"
-  },
-  "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-Regular.ttf": {
-    "file": "assets/FZ Poppins-Regular-0c3dcccf.ttf",
-    "src": "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-Regular.ttf"
-  },
-  "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-SemiBold.ttf": {
-    "file": "assets/FZ Poppins-SemiBold-77174100.ttf",
-    "src": "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-SemiBold.ttf"
-  },
-  "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-Thin.ttf": {
-    "file": "assets/FZ Poppins-Thin-6c1a21be.ttf",
-    "src": "resources/vendor/frontend/fonts/FzPoppins/FZ Poppins-Thin.ttf"
-  },
   "resources/vendor/frontend/fonts/UTM-Avo/UTM Avo.ttf": {
     "file": "assets/UTM Avo-7b277458.ttf",
     "src": "resources/vendor/frontend/fonts/UTM-Avo/UTM Avo.ttf"
@@ -146,14 +110,6 @@
   "resources/vendor/frontend/fonts/UTM-Avo/UTM AvoBold.ttf": {
     "file": "assets/UTM AvoBold-e43f8856.ttf",
     "src": "resources/vendor/frontend/fonts/UTM-Avo/UTM AvoBold.ttf"
-  },
-  "resources/vendor/frontend/resources/fonts/UTMEremitage/utm_eremitage-webfont.woff": {
-    "file": "assets/utm_eremitage-webfont-244a7e8b.woff",
-    "src": "resources/vendor/frontend/resources/fonts/UTMEremitage/utm_eremitage-webfont.woff"
-  },
-  "resources/vendor/frontend/resources/fonts/UTMEremitage/utm_eremitage-webfont.woff2": {
-    "file": "assets/utm_eremitage-webfont-e327b60d.woff2",
-    "src": "resources/vendor/frontend/resources/fonts/UTMEremitage/utm_eremitage-webfont.woff2"
   },
   "resources/vendor/frontend/resources/fonts/font-awesome-4.7.0/fonts/fontawesome-webfont.eot": {
     "file": "assets/fontawesome-webfont-7bfcab6d.eot",
@@ -178,5 +134,25 @@
   "resources/vendor/frontend/resources/fonts/uicons-regular-straight.woff2": {
     "file": "assets/uicons-regular-straight-e013f9ca.woff2",
     "src": "resources/vendor/frontend/resources/fonts/uicons-regular-straight.woff2"
+  },
+  "resources/vendor/frontend/resources/img/brand-icon.png": {
+    "file": "assets/brand-icon-4ee8d9eb.png",
+    "src": "resources/vendor/frontend/resources/img/brand-icon.png"
+  },
+  "resources/vendor/frontend/resources/img/icon/cat-bg.png": {
+    "file": "assets/cat-bg-869329a2.png",
+    "src": "resources/vendor/frontend/resources/img/icon/cat-bg.png"
+  },
+  "resources/vendor/frontend/resources/img/icon/footer.png": {
+    "file": "assets/footer-4c5fce39.png",
+    "src": "resources/vendor/frontend/resources/img/icon/footer.png"
+  },
+  "resources/vendor/frontend/resources/img/ribbon.png": {
+    "file": "assets/ribbon-bc5d35d2.png",
+    "src": "resources/vendor/frontend/resources/img/ribbon.png"
+  },
+  "resources/vendor/frontend/resources/img/spiner.svg": {
+    "file": "assets/spiner-e52b9b42.svg",
+    "src": "resources/vendor/frontend/resources/img/spiner.svg"
   }
 }
