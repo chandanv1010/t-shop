@@ -36,7 +36,7 @@
                             @endif
 
                             @if ($histories->count() > 0)
-                                <div class="uk-overflow-container" style="overflow-x: auto;">
+                                <div class="uk-overflow-container">
                                     <table class="uk-table uk-table-striped uk-table-hover point-table">
                                         <thead>
                                             <tr>
@@ -137,58 +137,3 @@
         });
     </script>
 @endsection
-
-<style>
-    .point-table th,
-    .point-table td {
-        vertical-align: middle !important;
-        font-size: 15px;
-    }
-
-    .type-badge {
-        display: inline-block;
-        padding: 6px 12px;
-        border-radius: 999px;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .type-badge--success {
-        background: #e8f7ef;
-        color: #1b5e20;
-    }
-
-    .type-badge--danger {
-        background: #fdecea;
-        color: #b71c1c;
-    }
-
-    .type-badge--warning {
-        background: #fff3cd;
-        color: #8a6d3b;
-    }
-
-    .type-badge--muted {
-        background: #eceff1;
-        color: #455a64;
-    }
-
-    .point-chip {
-        display: inline-block;
-        min-width: 120px;
-        padding: 8px 12px;
-        border-radius: 6px;
-        font-weight: 600;
-        text-align: center;
-    }
-
-    .point-chip--negative {
-        background: #fdecec;
-        color: #c62828;
-    }
-
-    .point-chip--positive {
-        background: #e8f5e9;
-        color: #2e7d32;
-    }
-</style>

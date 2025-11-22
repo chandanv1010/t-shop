@@ -41,56 +41,52 @@
 
                             <div class="order-detail-wrapper">
                                 {{-- Thông tin đơn hàng --}}
-                                <div class="uk-panel  uk-margin-bottom" style="background: #f8f9fa;">
-                                    <h3 class="uk-panel-title uk-text-bold uk-margin-bottom"
-                                        style="font-size: 20px; padding: 12px 15px; margin: 0; background: #e8f4f0;">
+                                <div class="uk-panel uk-margin-bottom detail-panel">
+                                    <h3 class="uk-panel-title uk-text-bold uk-margin-bottom detail-panel-title">
                                         Thông tin đơn hàng</h3>
-                                    <div class="uk-grid uk-grid-small" style="background: #fff; padding: 15px;">
+                                    <div class="uk-grid uk-grid-small detail-panel-content">
                                         <div class="uk-width-medium-1-2">
-                                            <div class="uk-margin-small" style="padding: 8px 0;">
-                                                <span class="uk-text-bold uk-display-inline-block"
-                                                    style="min-width: 140px; font-size: 15px;">Mã đơn hàng:</span>
-                                                <span class="uk-text-primary"
-                                                    style="font-size: 15px;"><strong>#{{ $order->code }}</strong></span>
-                                            </div>
-                                            <div class="uk-margin-small" style="padding: 8px 0;">
-                                                <span class="uk-text-bold uk-display-inline-block"
-                                                    style="min-width: 140px; font-size: 15px;">Ngày đặt:</span>
+                                            <div class="uk-margin-small detail-row">
+                                                <span class="uk-text-bold uk-display-inline-block detail-label">Mã đơn
+                                                    hàng:</span>
                                                 <span
-                                                    style="font-size: 15px;">{{ date('d/m/Y H:i', strtotime($order->created_at)) }}</span>
+                                                    class="uk-text-primary detail-value"><strong>#{{ $order->code }}</strong></span>
                                             </div>
-                                            <div class="uk-margin-small" style="padding: 8px 0;">
-                                                <span class="uk-text-bold uk-display-inline-block"
-                                                    style="min-width: 140px; font-size: 15px;">Cập nhật:</span>
+                                            <div class="uk-margin-small detail-row">
+                                                <span class="uk-text-bold uk-display-inline-block detail-label">Ngày
+                                                    đặt:</span>
                                                 <span
-                                                    style="font-size: 15px;">{{ date('d/m/Y H:i', strtotime($order->updated_at)) }}</span>
+                                                    class="detail-value">{{ date('d/m/Y H:i', strtotime($order->created_at)) }}</span>
+                                            </div>
+                                            <div class="uk-margin-small detail-row">
+                                                <span class="uk-text-bold uk-display-inline-block detail-label">Cập
+                                                    nhật:</span>
+                                                <span
+                                                    class="detail-value">{{ date('d/m/Y H:i', strtotime($order->updated_at)) }}</span>
                                             </div>
                                         </div>
                                         <div class="uk-width-medium-1-2">
-                                            <div class="uk-margin-small" style="padding: 8px 0;">
-                                                <span class="uk-text-bold uk-display-inline-block"
-                                                    style="min-width: 140px; font-size: 15px;">Trạng thái:</span>
+                                            <div class="uk-margin-small detail-row">
+                                                <span class="uk-text-bold uk-display-inline-block detail-label">Trạng
+                                                    thái:</span>
                                                 <span
-                                                    class="uk-badge uk-badge-{{ $order->confirm == 'confirm' ? 'success' : ($order->confirm == 'cancle' ? 'danger' : 'warning') }}"
-                                                    style="font-size: 16px; padding: 6px 12px;">
+                                                    class="uk-badge uk-badge-{{ $order->confirm == 'confirm' ? 'success' : ($order->confirm == 'cancle' ? 'danger' : 'warning') }} detail-badge">
                                                     {{ __('order.confirm')[$order->confirm] ?? $order->confirm }}
                                                 </span>
                                             </div>
-                                            <div class="uk-margin-small" style="padding: 8px 0;">
-                                                <span class="uk-text-bold uk-display-inline-block"
-                                                    style="min-width: 140px; font-size: 15px;">Thanh toán:</span>
+                                            <div class="uk-margin-small detail-row">
+                                                <span class="uk-text-bold uk-display-inline-block detail-label">Thanh
+                                                    toán:</span>
                                                 <span
-                                                    class="uk-badge uk-badge-{{ $order->payment == 'paid' ? 'success' : 'warning' }}"
-                                                    style="font-size: 16px; padding: 6px 12px;">
+                                                    class="uk-badge uk-badge-{{ $order->payment == 'paid' ? 'success' : 'warning' }} detail-badge">
                                                     {{ $order->payment == 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán' }}
                                                 </span>
                                             </div>
-                                            <div class="uk-margin-small" style="padding: 8px 0;">
-                                                <span class="uk-text-bold uk-display-inline-block"
-                                                    style="min-width: 140px; font-size: 15px;">Giao hàng:</span>
+                                            <div class="uk-margin-small detail-row">
+                                                <span class="uk-text-bold uk-display-inline-block detail-label">Giao
+                                                    hàng:</span>
                                                 <span
-                                                    class="uk-badge uk-badge-{{ $order->delivery == 'success' ? 'success' : ($order->delivery == 'processing' ? 'primary' : 'warning') }}"
-                                                    style="font-size: 16px; padding: 6px 12px;">
+                                                    class="uk-badge uk-badge-{{ $order->delivery == 'success' ? 'success' : ($order->delivery == 'processing' ? 'primary' : 'warning') }} detail-badge">
                                                     {{ $order->delivery == 'pending'
                                                         ? 'Chờ giao hàng'
                                                         : ($order->delivery == 'processing'
@@ -99,50 +95,47 @@
                                                                 ? 'Đã giao hàng'
                                                                 : '-')) }}
                                                 </span>
-
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 {{-- Thông tin người nhận --}}
-                                <div class="uk-panel  uk-margin-bottom" style="background: #f8f9fa;">
-                                    <h3 class="uk-panel-title uk-text-bold uk-margin-bottom"
-                                        style="font-size: 20px; padding: 12px 15px; margin: 0; background: #e8f4f0;">
+                                <div class="uk-panel uk-margin-bottom detail-panel">
+                                    <h3 class="uk-panel-title uk-text-bold uk-margin-bottom detail-panel-title">
                                         Thông tin người nhận</h3>
-                                    <div class="uk-grid uk-grid-small" style="background: #fff; padding: 15px;">
+                                    <div class="uk-grid uk-grid-small detail-panel-content">
                                         <div class="uk-width-medium-1-2">
-                                            <div class="uk-margin-small" style="padding: 8px 0;">
-                                                <span class="uk-text-bold uk-display-inline-block"
-                                                    style="min-width: 140px; font-size: 15px;">Họ tên:</span>
-                                                <span style="font-size: 15px;">{{ $order->fullname }}</span>
+                                            <div class="uk-margin-small detail-row">
+                                                <span class="uk-text-bold uk-display-inline-block detail-label">Họ
+                                                    tên:</span>
+                                                <span class="detail-value">{{ $order->fullname }}</span>
                                             </div>
-                                            <div class="uk-margin-small" style="padding: 8px 0;">
-                                                <span class="uk-text-bold uk-display-inline-block"
-                                                    style="min-width: 140px; font-size: 15px;">Số điện thoại:</span>
-                                                <span style="font-size: 15px;">{{ $order->phone }}</span>
+                                            <div class="uk-margin-small detail-row">
+                                                <span class="uk-text-bold uk-display-inline-block detail-label">Số điện
+                                                    thoại:</span>
+                                                <span class="detail-value">{{ $order->phone }}</span>
                                             </div>
                                             @if ($order->email)
-                                                <div class="uk-margin-small" style="padding: 8px 0;">
-                                                    <span class="uk-text-bold uk-display-inline-block"
-                                                        style="min-width: 140px; font-size: 15px;">Email:</span>
-                                                    <span style="font-size: 15px;">{{ $order->email }}</span>
+                                                <div class="uk-margin-small detail-row">
+                                                    <span
+                                                        class="uk-text-bold uk-display-inline-block detail-label">Email:</span>
+                                                    <span class="detail-value">{{ $order->email }}</span>
                                                 </div>
                                             @endif
                                         </div>
                                         <div class="uk-width-medium-1-2">
-                                            <div class="uk-margin-small" style="padding: 8px 0;">
-                                                <span class="uk-text-bold uk-display-inline-block"
-                                                    style="min-width: 140px; font-size: 15px;">Địa chỉ:</span>
-                                                <span style="font-size: 15px;">{{ $order->address }}</span>
+                                            <div class="uk-margin-small detail-row">
+                                                <span class="uk-text-bold uk-display-inline-block detail-label">Địa
+                                                    chỉ:</span>
+                                                <span class="detail-value">{{ $order->address }}</span>
                                             </div>
                                             @if ($order->province_name || $order->district_name || $order->ward_name)
-                                                <div class="uk-margin-small" style="padding: 8px 0;">
-                                                    <span class="uk-text-bold uk-display-inline-block"
-                                                        style="min-width: 140px; font-size: 15px;">Tỉnh/TP - Quận/Huyện -
+                                                <div class="uk-margin-small detail-row">
+                                                    <span class="uk-text-bold uk-display-inline-block detail-label">Tỉnh/TP
+                                                        - Quận/Huyện -
                                                         Phường/Xã:</span>
-                                                    <span style="font-size: 15px;">
+                                                    <span class="detail-value">
                                                         {{ $order->ward_name ?? '' }}{{ $order->ward_name && ($order->district_name || $order->province_name) ? ', ' : '' }}
                                                         {{ $order->district_name ?? '' }}{{ $order->district_name && $order->province_name ? ', ' : '' }}
                                                         {{ $order->province_name ?? '' }}
@@ -150,10 +143,10 @@
                                                 </div>
                                             @endif
                                             @if ($order->description)
-                                                <div class="uk-margin-small" style="padding: 8px 0;">
-                                                    <span class="uk-text-bold uk-display-inline-block"
-                                                        style="min-width: 140px; font-size: 15px;">Ghi chú:</span>
-                                                    <span style="font-size: 15px;">{{ $order->description }}</span>
+                                                <div class="uk-margin-small detail-row">
+                                                    <span class="uk-text-bold uk-display-inline-block detail-label">Ghi
+                                                        chú:</span>
+                                                    <span class="detail-value">{{ $order->description }}</span>
                                                 </div>
                                             @endif
                                         </div>
@@ -161,32 +154,29 @@
                                 </div>
 
                                 {{-- Phương thức thanh toán --}}
-                                <div class="uk-panel  uk-margin-bottom" style="background: #f8f9fa;">
-                                    <h3 class="uk-panel-title uk-text-bold uk-margin-bottom uk-margin-2"
-                                        style="font-size: 20px; padding: 12px 15px; margin: 0; background: #e8f4f0;">
+                                <div class="uk-panel uk-margin-bottom detail-panel">
+                                    <h3 class="uk-panel-title uk-text-bold uk-margin-bottom uk-margin-2 detail-panel-title">
                                         Phương thức thanh toán</h3>
-                                    <div class="uk-flex uk-flex-middle" style="background: #fff; padding: 15px;">
+                                    <div class="uk-flex uk-flex-middle detail-panel-content">
                                         @php
                                             $paymentMethods = __('payment.method');
                                             $methodInfo = collect($paymentMethods)->firstWhere('name', $order->method);
                                         @endphp
                                         @if ($methodInfo && isset($methodInfo['image']))
-                                            <img src="{{ asset($methodInfo['image']) }}"
-                                                alt="{{ $methodInfo['title'] }}"
-                                                style="max-width: 100px; margin-right: 15px;">
-                                            <span style="font-size: 15px;">{{ $methodInfo['title'] }}</span>
+                                            <img src="{{ asset($methodInfo['image']) }}" alt="{{ $methodInfo['title'] }}"
+                                                class="payment-method-img">
+                                            <span class="detail-value">{{ $methodInfo['title'] }}</span>
                                         @else
-                                            <span style="font-size: 15px;">{{ $order->method }}</span>
+                                            <span class="detail-value">{{ $order->method }}</span>
                                         @endif
                                     </div>
                                 </div>
 
                                 {{-- Danh sách sản phẩm --}}
-                                <div class="uk-panel  uk-margin-bottom" style="background: #f8f9fa;">
-                                    <h3 class="uk-panel-title uk-text-bold uk-margin-bottom"
-                                        style="font-size: 20px; padding: 12px 15px; margin: 0; background: #e8f4f0;">
+                                <div class="uk-panel uk-margin-bottom detail-panel">
+                                    <h3 class="uk-panel-title uk-text-bold uk-margin-bottom detail-panel-title">
                                         Sản phẩm đã mua</h3>
-                                    <div class="uk-overflow-container" style="background: #fff; padding: 15px;">
+                                    <div class="uk-overflow-container detail-panel-content">
                                         <table class="uk-table uk-table-striped uk-table-hover">
                                             <thead>
                                                 <tr>
@@ -211,35 +201,35 @@
                                                         $image = $option['image'] ?? null;
                                                     @endphp
                                                     <tr>
-                                                        <td class="uk-text-center" style="font-size: 15px;">
+                                                        <td class="uk-text-center table-cell">
                                                             {{ $index + 1 }}</td>
                                                         <td>
                                                             <div class="uk-flex uk-flex-middle">
                                                                 @if ($image)
                                                                     <img src="{{ asset($image) }}"
-                                                                        alt="{{ $item->name }}"
-                                                                        style="width: 80px; height: 80px; object-fit: contain; border-radius: 4px; margin-right: 12px;">
+                                                                        alt="{{ $item->name }}" class="product-img">
                                                                 @endif
                                                                 <div>
-                                                                    <div class="uk-text-bold" style="font-size: 15px;">
+                                                                    <div class="uk-text-bold product-name">
                                                                         {{ $item->name ?? 'N/A' }}</div>
                                                                     @if ($item->uuid)
-                                                                        <div class="uk-text-small uk-text-muted"
-                                                                            style="font-size: 13px;">Mã:
+                                                                        <div
+                                                                            class="uk-text-small uk-text-muted product-code">
+                                                                            Mã:
                                                                             {{ $item->uuid }}</div>
                                                                     @endif
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td class="uk-text-center" style="font-size: 15px;">
+                                                        <td class="uk-text-center table-cell">
                                                             {{ $item->qty ?? 0 }}</td>
                                                         <td class="uk-text-right">
-                                                            <span class="uk-text-bold uk-text-primary"
-                                                                style="font-size: 15px;">{{ convert_price($item->price ?? 0, true) }}₫</span>
+                                                            <span
+                                                                class="uk-text-bold uk-text-primary table-cell">{{ convert_price($item->price ?? 0, true) }}₫</span>
                                                         </td>
                                                         <td class="uk-text-right">
-                                                            <strong class="uk-text-bold uk-text-primary"
-                                                                style="font-size: 15px;">{{ convert_price(($item->price ?? 0) * ($item->qty ?? 0), true) }}₫</strong>
+                                                            <strong
+                                                                class="uk-text-bold uk-text-primary table-cell">{{ convert_price(($item->price ?? 0) * ($item->qty ?? 0), true) }}₫</strong>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -249,7 +239,7 @@
                                 </div>
 
                                 {{-- Tổng tiền --}}
-                                <div class="uk-panel uk-margin-bottom" style="background: #fff;">
+                                <div class="uk-panel uk-margin-bottom total-panel">
                                     @php
                                         $cart = is_array($order->cart) ? $order->cart : [];
                                         $promotion = is_array($order->promotion) ? $order->promotion : [];
@@ -260,30 +250,26 @@
                                         $finalTotal = $subTotal + $shipping;
                                     @endphp
 
-                                    <div class="uk-flex uk-flex-middle uk-flex-space-between"
-                                        style="padding: 12px 15px; background: #fef0f0; border-bottom: 1px solid #ffcdd2;">
+                                    <div class="uk-flex uk-flex-middle uk-flex-space-between total-header">
 
-                                        <h3 class="uk-panel-title uk-text-bold"
-                                            style="font-size: 20px; margin: 0; color: #d32f2f;">
+                                        <h3 class="uk-panel-title uk-text-bold total-title">
                                             Tổng tiền
                                         </h3>
 
                                         {{-- GIÁ TỔNG CỘNG ĐƯA LÊN NGANG --}}
-                                        <span class="uk-text-bold" style="font-size: 26px; color: #d32f2f;">
+                                        <span class="uk-text-bold total-amount">
                                             {{ convert_price($finalTotal, true) }}₫
                                         </span>
                                     </div>
 
-                                    <div class="uk-grid uk-grid-small" style="background: #fff; padding: 15px;">
+                                    <div class="uk-grid uk-grid-small total-content">
                                         <div class="uk-width-1-1">
 
                                             @if ($promotionDiscount > 0)
-                                                <div class="uk-margin-small" style="padding: 10px 0;">
+                                                <div class="uk-margin-small total-row">
                                                     <div class="uk-flex uk-flex-space-between">
-                                                        <span class="uk-text-bold" style="font-size: 15px;">Giảm
-                                                            giá:</span>
-                                                        <span class="uk-text-bold uk-text-danger"
-                                                            style="font-size: 15px;">
+                                                        <span class="uk-text-bold detail-value">Giảm giá:</span>
+                                                        <span class="uk-text-bold uk-text-danger detail-value">
                                                             -{{ convert_price($promotionDiscount, true) }}₫
                                                         </span>
                                                     </div>
@@ -291,11 +277,10 @@
                                             @endif
 
                                             @if ($shipping > 0)
-                                                <div class="uk-margin-small" style="padding: 10px 0;">
+                                                <div class="uk-margin-small total-row">
                                                     <div class="uk-flex uk-flex-space-between">
-                                                        <span class="uk-text-bold" style="font-size: 15px;">Phí vận
-                                                            chuyển:</span>
-                                                        <span class="uk-text-bold" style="font-size: 15px;">
+                                                        <span class="uk-text-bold detail-value">Phí vận chuyển:</span>
+                                                        <span class="uk-text-bold detail-value">
                                                             {{ convert_price($shipping, true) }}₫
                                                         </span>
                                                     </div>
@@ -308,29 +293,26 @@
 
                                 {{-- Điểm tích lũy --}}
                                 @if ($order->point_added || $order->point_used)
-                                    <div class="uk-panel  uk-margin-bottom" style="background: #f8f9fa;">
-                                        <h3 class="uk-panel-title uk-text-bold uk-margin-bottom"
-                                            style="font-size: 20px; padding: 12px 15px; margin: 0; background: #e8f4f0;">
+                                    <div class="uk-panel uk-margin-bottom detail-panel">
+                                        <h3 class="uk-panel-title uk-text-bold uk-margin-bottom detail-panel-title">
                                             Điểm tích lũy</h3>
-                                        <div class="uk-grid uk-grid-small" style="background: #fff; padding: 15px;">
+                                        <div class="uk-grid uk-grid-small detail-panel-content">
                                             <div class="uk-width-1-1">
                                                 @if ($order->point_used > 0)
-                                                    <div class="uk-margin-small" style="padding: 8px 0;">
-                                                        <span class="uk-text-bold uk-display-inline-block"
-                                                            style="min-width: 180px; font-size: 15px;">Điểm đã sử
-                                                            dụng:</span>
-                                                        <span class="uk-text-danger"
-                                                            style="font-size: 15px;">-{{ number_format($order->point_used) }}
+                                                    <div class="uk-margin-small detail-row">
+                                                        <span class="uk-text-bold uk-display-inline-block point-label">Điểm
+                                                            đã sử dụng:</span>
+                                                        <span
+                                                            class="uk-text-danger detail-value">-{{ number_format($order->point_used) }}
                                                             điểm</span>
                                                     </div>
                                                 @endif
                                                 @if ($order->point_added && $order->point_value > 0)
-                                                    <div class="uk-margin-small" style="padding: 8px 0;">
-                                                        <span class="uk-text-bold uk-display-inline-block"
-                                                            style="min-width: 180px; font-size: 15px;">Điểm được
-                                                            cộng:</span>
-                                                        <span class="uk-text-success"
-                                                            style="font-size: 15px;">+{{ number_format($order->point_value) }}
+                                                    <div class="uk-margin-small detail-row">
+                                                        <span class="uk-text-bold uk-display-inline-block point-label">Điểm
+                                                            được cộng:</span>
+                                                        <span
+                                                            class="uk-text-success detail-value">+{{ number_format($order->point_value) }}
                                                             điểm</span>
                                                     </div>
                                                 @endif
@@ -365,8 +347,3 @@
         });
     </script>
 @endsection
-<style>
-    table td {
-        vertical-align: middle !important;
-    }
-</style>F

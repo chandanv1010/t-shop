@@ -40,28 +40,28 @@
                             @endif
 
                             @if ($orders->count() > 0)
-                                <div class="uk-overflow-container" style="overflow-x: auto;">
-                                    <table class="uk-table uk-table-striped uk-table-hover" style="min-width: 1400px;">
+                                <div class="uk-overflow-container customer-order-table">
+                                    <table class="uk-table uk-table-striped uk-table-hover">
                                         <thead>
                                             <tr>
-                                                <th style="min-width: 120px;">Mã đơn hàng</th>
-                                                <th style="min-width: 140px;">Ngày đặt</th>
-                                                <th style="min-width: 200px;">Khách Hàng</th>
-                                                <th style="min-width: 120px;">Email</th>
-                                                <th style="min-width: 100px;">Tỉnh/TP</th>
-                                                <th style="min-width: 100px;">Quận/Huyện</th>
-                                                <th style="min-width: 100px;">Phường/Xã</th>
-                                                <th style="min-width: 100px;" class="uk-text-right">Giảm giá</th>
-                                                <th style="min-width: 100px;" class="uk-text-right">Phí ship</th>
-                                                <th style="min-width: 120px;" class="uk-text-right">Tổng cộng</th>
-                                                <th style="min-width: 120px;">Phương thức</th>
-                                                <th style="min-width: 100px;" class="uk-text-center">Trạng thái</th>
-                                                <th style="min-width: 120px;" class="uk-text-center">Thanh toán</th>
-                                                <th style="min-width: 100px;" class="uk-text-center">Giao hàng</th>
-                                                <th style="min-width: 120px;" class="uk-text-center">Điểm tích lũy</th>
-                                                <th style="min-width: 130px;" class="uk-text-center">Điểm đã dùng</th>
-                                                <th style="min-width: 150px;">Ghi chú</th>
-                                                <th style="min-width: 100px;" class="uk-text-center">Thao tác</th>
+                                                <th>Mã đơn hàng</th>
+                                                <th>Ngày đặt</th>
+                                                <th>Khách Hàng</th>
+                                                <th>Email</th>
+                                                <th>Tỉnh/TP</th>
+                                                <th>Quận/Huyện</th>
+                                                <th>Phường/Xã</th>
+                                                <th class="uk-text-right">Giảm giá</th>
+                                                <th class="uk-text-right">Phí ship</th>
+                                                <th class="uk-text-right">Tổng cộng</th>
+                                                <th>Phương thức</th>
+                                                <th class="uk-text-center">Trạng thái</th>
+                                                <th class="uk-text-center">Thanh toán</th>
+                                                <th class="uk-text-center">Giao hàng</th>
+                                                <th class="uk-text-center">Điểm tích lũy</th>
+                                                <th class="uk-text-center">Điểm đã dùng</th>
+                                                <th>Ghi chú</th>
+                                                <th class="uk-text-center">Thao tác</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -76,9 +76,10 @@
                                                     $detailUrl = route('customer.order.detail', $order->code);
                                                 @endphp
                                                 <tr onclick="window.location='{{ $detailUrl }}';"
-                                                    style="cursor: pointer;">
+                                                    class="order-row-clickable">
                                                     <td>
-                                                        <strong class="uk-text-primary">#{{ $order->code }}</strong>
+                                                        <strong
+                                                            class="uk-text-primary order-code">#{{ $order->code }}</strong>
                                                     </td>
                                                     <td>
                                                         {{ convertDateTime($order->created_at, 'd-m-Y') }}
@@ -108,8 +109,8 @@
                                                         @endif
                                                     </td>
                                                     <td class="uk-text-right">
-                                                        <strong class="uk-text-primary"
-                                                            style="font-size: 16px; font-weight: bold;">{{ convert_price($finalTotal, true) }}₫</strong>
+                                                        <strong
+                                                            class="uk-text-primary order-total-amount">{{ convert_price($finalTotal, true) }}₫</strong>
                                                     </td>
                                                     <td>
                                                         @php
@@ -123,7 +124,7 @@
                                                             <img src="{{ asset($methodInfo['image']) }}"
                                                                 alt="{{ $methodInfo['title'] }}"
                                                                 title="{{ $methodInfo['title'] }}"
-                                                                style="max-width: 40px; height: auto;">
+                                                                class="payment-method-img">
                                                         @else
                                                             <span
                                                                 class="uk-text-muted uk-text-small">{{ $order->method ?? '-' }}</span>
@@ -168,9 +169,9 @@
                                                     </td>
                                                     <td class="uk-text-center">
                                                         <a href="{{ $detailUrl }}"
-                                                            class="uk-button uk-button-small uk-button-primary"
-                                                            style="border-radius: 6px;" title="Xem chi tiết">
-                                                            <i class="fa fa-eye" style="margin-top: 5px"></i>
+                                                            class="uk-button uk-button-small uk-button-primary action-btn"
+                                                            title="Xem chi tiết">
+                                                            <i class="fa fa-eye action-icon"></i>
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -215,8 +216,3 @@
         });
     </script>
 @endsection
-<style>
-    table td {
-        vertical-align: middle !important;
-    }
-</style>
