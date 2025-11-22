@@ -311,7 +311,7 @@
                                                 <h3 class="title"><a href="{{ $canonical }}"
                                                         title="{{ $name }}">{{ $name }}</a></h3>
                                                 <div class="price">
-                                                    {!! $price['html'] !!}
+                                                    {!! $price['html'] !!} 
                                                 </div>
                                             </div>
                                         </div>
