@@ -1583,13 +1583,23 @@ ol li {
 }
 
 .pic-list {
+    height: auto !important;
+    align-items: flex-start !important;
+
     .image {
         height: 70px;
         border-radius: 10px;
         cursor: pointer;
+        line-height: 1 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         img {
             border-radius: 10px;
+            height: 100%;
+            width: auto;
+            object-fit: cover;
         }
     }
 }
@@ -1871,6 +1881,25 @@ ol li {
 
 .product-list_image {
     position: relative;
+
+    .swiper-container-thumbs {
+        height: auto;
+        
+        .swiper-wrapper.pic-list {
+            height: auto;
+            align-items: flex-start;
+        }
+
+        .swiper-slide {
+            height: auto;
+            
+            .image {
+                height: 70px;
+                display: block;
+                line-height: 1;
+            }
+        }
+    }
 }
 
 .wine-detail-box {
