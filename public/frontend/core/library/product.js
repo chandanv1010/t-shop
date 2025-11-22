@@ -9,6 +9,7 @@
 		document.querySelectorAll(".product-gallery").forEach(product => {
 			var swiper = new Swiper(product.querySelector(".swiper-container"), {
 				loop: true,
+				autoHeight: false,
 				// autoplay: {
 				// 	delay: 2000,
 				// 	disableOnInteraction: false,
@@ -26,6 +27,17 @@
 						slidesPerView: 8,
 						spaceBetween: 10,
 						slideToClickedSlide: true,
+					}
+				},
+				on: {
+					init: function() {
+						// Đảm bảo height không bị Swiper override
+						var container = product.querySelector(".swiper-container");
+						var wrapper = product.querySelector(".swiper-wrapper");
+						var slide = product.querySelector(".swiper-slide");
+						if (container) container.style.height = 'auto';
+						if (wrapper) wrapper.style.height = 'auto';
+						if (slide) slide.style.height = 'auto';
 					}
 				}
 			});

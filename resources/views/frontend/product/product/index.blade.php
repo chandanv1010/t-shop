@@ -34,198 +34,198 @@
 
         <section class="prddetail">
             <div class="uk-container uk-container-center">
-                <div class="uk-grid uk-grid-medium uk-grid-width-large-1-2">
-                    <div class="product-gallery">
-                        @if (isset($list_image) && !empty($list_image) && !is_null($list_image))
-                            <div class="product-list_image">
-                                <div class="swiper-button-next"></div>
-                                <div class="swiper-button-prev"></div>
-                                <div class="swiper-container">
-                                    <div class="swiper-wrapper big-pic">
-                                        <?php foreach($list_image as $key => $val){  ?>
-                                        <div class="swiper-slide" data-swiper-autoplay="2000">
-                                            <a href="{{ $val }}" data-fancybox="my-group"
-                                                class="image img-cover img-v">
-                                                <img src="{{ image($val) }}" alt="<?php echo $val; ?>">
-                                            </a>
-                                        </div>
-                                        <?php }  ?>
-                                    </div>
-                                </div>
-                                <div class="swiper-container-thumbs">
-                                    <div class="swiper-wrapper pic-list">
-                                        <?php foreach($list_image as $key => $val){  ?>
-                                        <div class="swiper-slide">
-                                            <span class="image img-cover"><img src="{{ image($val) }}"
-                                                    alt="<?php echo $val; ?>"></span>
-                                        </div>
-                                        <?php }  ?>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-
-                    {{-- Product info --}}
-                    <div class="product-info">
-                        <h1 class="prd-name">{{ $prd_title }}</h1>
-                        <div class="rate-container">
-                            <div class="uk-flex uk-flex-middle">
-                                <div class="star-container uk-flex uk-flex-middle">
-                                    <img src="{{ asset('frontend/resources/img/i.png') }}" alt="star">
-                                    <img src="{{ asset('frontend/resources/img/i.png') }}" alt="star">
-                                    <img src="{{ asset('frontend/resources/img/i.png') }}" alt="star">
-                                    <img src="{{ asset('frontend/resources/img/i.png') }}" alt="star">
-                                    <img src="{{ asset('frontend/resources/img/i.png') }}" alt="star">
-                                </div>
-                                <span class="star-count">4.8</span>
-                                <span class="total-reviews">( {{ rand(200, 500) }} đánh giá)</span>
-                                <span class="uk-flex uk-flex-middle point-breacker">
-                                    <img src="{{ asset('frontend/resources/img/b.png') }}" alt="point">
-                                    <span class="number">100% Điểm đánh giá</span>
-                                </span>
-                                <span class="uk-flex uk-flex-middle addToWishlist {{ $isWishlisted ? 'active' : '' }}"
-                                    data-id="{{ $product->id }}" role="button" tabindex="0">
-                                    <i
-                                        class="fa wishlist-icon {{ $isWishlisted ? 'fa-heart wishlist-icon--active' : 'fa-heart-o' }}"></i>
-                                    <span class="number {{ $isWishlisted ? 'uk-text-danger' : 'uk-text-primary' }}">
-                                        {{ $isWishlisted ? 'Đã yêu thích' : 'Thêm vào yêu thích' }}
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="description">
-                            {!! $product->description !!}
-                        </div>
-
-
-                        <div class="product-price">
-                            <div class="uk-flex uk-flex-middle">
-                                <span>Giá: </span><span class="uk-text-danger">{!! $price['html'] !!}</span>
-                            </div>
-                        </div>
-
-
-                        <div class="prd-option">
-                            <div class="option-block">
-                                <div class="product-stock">
-                                    <div class="uk-grid uk-grid-medium uk-grid-width-large-1-2 uk-flex uk-flex-middle">
-                                        <div class="prd-btn btn-addtocard">
-                                            <a href="#order-buy" title="" id="btn-buy" data-uk-modal>
-                                                <span class="title">Mua ngay</span>
-                                                <span class="sub-title">Mua ngay để có giá tốt nhất</span>
-                                            </a>
-                                        </div>
-                                        <div class="prd-btn btn-installment">
-                                            <a href="tel:{{ $system['contact_hotline'] ?? '' }}"
-                                                title="{{ $system['contact_hotline'] ?? '' }}">
-                                                <span class="title">Liên hệ</span>
-                                                <span class="sub-title">Liên hệ ngay để có giá tốt nhất</span>
-                                            </a>
+                <div class="uk-grid uk-grid-medium">
+                    <div class="uk-width-large-1-2">
+                        <div class="product-gallery">
+                            @if (isset($list_image) && !empty($list_image) && !is_null($list_image))
+                                <div class="product-list_image">
+                                    <div class="swiper-button-next"></div>
+                                    <div class="swiper-button-prev"></div>
+                                    <div class="swiper-container">
+                                        <div class="swiper-wrapper big-pic">
+                                            <?php foreach($list_image as $key => $val){  ?>
+                                            <div class="swiper-slide" data-swiper-autoplay="2000">
+                                                <a href="{{ $val }}"
+                                                    class="image img-cover img-v">
+                                                    <img src="{{ image($val) }}" alt="<?php echo $val; ?>">
+                                                </a>
+                                            </div>
+                                            <?php }  ?>
                                         </div>
                                     </div>
-                                    @php
-                                        $isOutOfStock = $stockQuantity <= 0;
-                                    @endphp
-                                    @if ($isOutOfStock)
-                                        <div class="outstock-button mt20">
-                                            <button type="button" class="btn-out-stock" disabled>
-                                                <span class="icon">
-                                                    <i class="fa fa-ban"></i>
-                                                </span>
-                                                <span class="title">Hết hàng</span>
-                                            </button>
+                                    <div class="swiper-container-thumbs">
+                                        <div class="swiper-wrapper pic-list">
+                                            <?php foreach($list_image as $key => $val){  ?>
+                                            <div class="swiper-slide">
+                                                <span class="image img-cover"><img src="{{ image($val) }}"
+                                                        alt="<?php echo $val; ?>"></span>
+                                            </div>
+                                            <?php }  ?>
                                         </div>
-                                    @else
-                                        <div class="addcart-button mt20">
-                                            <a href="" title="" class="addToCart"
-                                                data-id="{{ $product->id }}">
-                                                <span class="icon">
-                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <circle cx="9" cy="21" r="1"></circle>
-                                                        <circle cx="20" cy="21" r="1"></circle>
-                                                        <path
-                                                            d="M1 1h4l2.8 13.4c.2 1 1 1.6 2 1.6h9.6c1 0 1.8-.7 2-1.6L23 6H6">
-                                                        </path>
-                                                    </svg>
-                                                </span>
-                                                <span class="title">Thêm vào giỏ hàng</span>
-                                            </a>
-                                        </div>
-                                    @endif
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="wine-detail-box">
-                            <h3 class="title">Chi tiết loại rượu</h3>
-
-                            <div class="wine-detail-grid">
-
-                                <div class="item">
-                                    <span class="label uk-flex uk-flex-middle">
-                                        <img src="{{ asset('frontend/resources/img/pa_loai-vang.svg') }}" alt="icon">
-                                        <span>Mã Sản Phẩm:</span>
-                                    </span>
-                                    <span class="value">{{ $product->code }}</span>
-                                </div>
-
-                                <div class="item">
-                                    <span class="label uk-flex uk-flex-middle">
-                                        <img src="{{ asset('frontend/resources/img/pa_nha-san-xuat.svg') }}"
-                                            alt="icon">
-                                        <span>Xuất Xứ:</span>
-                                    </span>
-                                    <span class="value">{{ $product->made_in }}</span>
-                                </div>
-
-                                <div class="item">
-                                    <span class="label uk-flex uk-flex-middle">
-                                        <img src="{{ asset('frontend/resources/img/pa_nong-do.svg') }}" alt="icon">
-                                        <span>Xuất xứ:</span>
-                                    </span>
-                                    <span class="value">{{ $product->percent }}%</span>
-                                </div>
-
-                                <div class="item">
-                                    <span class="label uk-flex uk-flex-middle">
-                                        <img src="{{ asset('frontend/resources/img/pa_dung-tich.svg') }}" alt="icon">
-                                        <span>Dung tích:</span>
-                                    </span>
-                                    <span class="value">{{ $product->ml }}ml</span>
-                                </div>
-
-                                <div class="item">
-                                    <span class="label uk-flex uk-flex-middle">
-                                        <svg class="mr10" width="25" height="25" viewBox="0 0 24 24"
-                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3 7L12 3L21 7V17L12 21L3 17V7Z" stroke="#9B0D1F" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M3 7L12 11L21 7" stroke="#9B0D1F" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M12 11V21" stroke="#9B0D1F" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round" />
-                                        </svg>
-
-                                        <span>Loại Sản Phẩm:</span>
-                                    </span>
-                                    <span class="value">{{ $productCatalogue->name }}</span>
-                                </div>
-
-                                <div class="item">
-                                    <span class="label uk-flex uk-flex-middle">
-                                        <img src="{{ asset('frontend/resources/img/pa_quoc-gia.svg') }}" alt="icon">
-                                        <span>Bảo Quản:</span>
-                                    </span>
-                                    <span class="value">16–18°C</span>
-                                </div>
-
-                            </div>
+                            @endif
                         </div>
                     </div>
-
-
+                    <div class="uk-width-large-1-2">
+                        <div class="product-info">
+                            <h1 class="prd-name">{{ $prd_title }}</h1>
+                            <div class="rate-container">
+                                <div class="uk-flex uk-flex-middle">
+                                    <div class="star-container uk-flex uk-flex-middle">
+                                        <img src="{{ asset('frontend/resources/img/i.png') }}" alt="star">
+                                        <img src="{{ asset('frontend/resources/img/i.png') }}" alt="star">
+                                        <img src="{{ asset('frontend/resources/img/i.png') }}" alt="star">
+                                        <img src="{{ asset('frontend/resources/img/i.png') }}" alt="star">
+                                        <img src="{{ asset('frontend/resources/img/i.png') }}" alt="star">
+                                    </div>
+                                    <span class="star-count">4.8</span>
+                                    <span class="total-reviews">( {{ rand(200, 500) }} đánh giá)</span>
+                                    <span class="uk-flex uk-flex-middle point-breacker">
+                                        <img src="{{ asset('frontend/resources/img/b.png') }}" alt="point">
+                                        <span class="number">100% Điểm đánh giá</span>
+                                    </span>
+                                    <span class="uk-flex uk-flex-middle addToWishlist {{ $isWishlisted ? 'active' : '' }}"
+                                        data-id="{{ $product->id }}" role="button" tabindex="0">
+                                        <i
+                                            class="fa wishlist-icon {{ $isWishlisted ? 'fa-heart wishlist-icon--active' : 'fa-heart-o' }}"></i>
+                                        <span class="number {{ $isWishlisted ? 'uk-text-danger' : 'uk-text-primary' }}">
+                                            {{ $isWishlisted ? 'Đã yêu thích' : 'Thêm vào yêu thích' }}
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="description">
+                                {!! $product->description !!}
+                            </div>
+    
+    
+                            <div class="product-price">
+                                <div class="uk-flex uk-flex-middle">
+                                    <span>Giá: </span><span class="uk-text-danger">{!! $price['html'] !!}</span>
+                                </div>
+                            </div>
+    
+    
+                            <div class="prd-option">
+                                <div class="option-block">
+                                    <div class="product-stock">
+                                        <div class="uk-grid uk-grid-medium uk-grid-width-large-1-2 uk-flex uk-flex-middle">
+                                            <div class="prd-btn btn-addtocard">
+                                                <a href="#order-buy" title="" id="btn-buy" data-uk-modal>
+                                                    <span class="title">Mua ngay</span>
+                                                    <span class="sub-title">Mua ngay để có giá tốt nhất</span>
+                                                </a>
+                                            </div>
+                                            <div class="prd-btn btn-installment">
+                                                <a href="tel:{{ $system['contact_hotline'] ?? '' }}"
+                                                    title="{{ $system['contact_hotline'] ?? '' }}">
+                                                    <span class="title">Liên hệ</span>
+                                                    <span class="sub-title">Liên hệ ngay để có giá tốt nhất</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        @php
+                                            $isOutOfStock = $stockQuantity <= 0;
+                                        @endphp
+                                        @if ($isOutOfStock)
+                                            <div class="outstock-button mt20">
+                                                <button type="button" class="btn-out-stock" disabled>
+                                                    <span class="icon">
+                                                        <i class="fa fa-ban"></i>
+                                                    </span>
+                                                    <span class="title">Hết hàng</span>
+                                                </button>
+                                            </div>
+                                        @else
+                                            <div class="addcart-button mt20">
+                                                <a href="" title="" class="addToCart"
+                                                    data-id="{{ $product->id }}">
+                                                    <span class="icon">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <circle cx="9" cy="21" r="1"></circle>
+                                                            <circle cx="20" cy="21" r="1"></circle>
+                                                            <path
+                                                                d="M1 1h4l2.8 13.4c.2 1 1 1.6 2 1.6h9.6c1 0 1.8-.7 2-1.6L23 6H6">
+                                                            </path>
+                                                        </svg>
+                                                    </span>
+                                                    <span class="title">Thêm vào giỏ hàng</span>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="wine-detail-box">
+                                <h3 class="title">Chi tiết loại rượu</h3>
+    
+                                <div class="wine-detail-grid">
+    
+                                    <div class="item">
+                                        <span class="label uk-flex uk-flex-middle">
+                                            <img src="{{ asset('frontend/resources/img/pa_loai-vang.svg') }}" alt="icon">
+                                            <span>Mã Sản Phẩm:</span>
+                                        </span>
+                                        <span class="value">{{ $product->code }}</span>
+                                    </div>
+    
+                                    <div class="item">
+                                        <span class="label uk-flex uk-flex-middle">
+                                            <img src="{{ asset('frontend/resources/img/pa_nha-san-xuat.svg') }}"
+                                                alt="icon">
+                                            <span>Xuất Xứ:</span>
+                                        </span>
+                                        <span class="value">{{ $product->made_in }}</span>
+                                    </div>
+    
+                                    <div class="item">
+                                        <span class="label uk-flex uk-flex-middle">
+                                            <img src="{{ asset('frontend/resources/img/pa_nong-do.svg') }}" alt="icon">
+                                            <span>Xuất xứ:</span>
+                                        </span>
+                                        <span class="value">{{ $product->percent }}%</span>
+                                    </div>
+    
+                                    <div class="item">
+                                        <span class="label uk-flex uk-flex-middle">
+                                            <img src="{{ asset('frontend/resources/img/pa_dung-tich.svg') }}" alt="icon">
+                                            <span>Dung tích:</span>
+                                        </span>
+                                        <span class="value">{{ $product->ml }}ml</span>
+                                    </div>
+    
+                                    <div class="item">
+                                        <span class="label uk-flex uk-flex-middle">
+                                            <svg class="mr10" width="25" height="25" viewBox="0 0 24 24"
+                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M3 7L12 3L21 7V17L12 21L3 17V7Z" stroke="#9B0D1F" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M3 7L12 11L21 7" stroke="#9B0D1F" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M12 11V21" stroke="#9B0D1F" stroke-width="2" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+    
+                                            <span>Loại Sản Phẩm:</span>
+                                        </span>
+                                        <span class="value">{{ $productCatalogue->name }}</span>
+                                    </div>
+    
+                                    <div class="item">
+                                        <span class="label uk-flex uk-flex-middle">
+                                            <img src="{{ asset('frontend/resources/img/pa_quoc-gia.svg') }}" alt="icon">
+                                            <span>Bảo Quản:</span>
+                                        </span>
+                                        <span class="value">16–18°C</span>
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
