@@ -1585,6 +1585,8 @@ ol li {
 .pic-list {
     height: auto !important;
     align-items: flex-start !important;
+    margin: 0 !important;
+    padding: 0 !important;
 
     .image {
         height: 70px;
@@ -1594,6 +1596,8 @@ ol li {
         display: flex;
         align-items: center;
         justify-content: center;
+        margin: 0 !important;
+        margin-bottom: 0 !important;
 
         img {
             border-radius: 10px;
@@ -1882,21 +1886,36 @@ ol li {
 .product-list_image {
     position: relative;
 
+    .swiper-container {
+        margin-bottom: 20px;
+    }
+
     .swiper-container-thumbs {
         height: auto;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        display: block !important;
+        position: relative !important;
+        clear: both !important;
         
         .swiper-wrapper.pic-list {
-            height: auto;
-            align-items: flex-start;
+            height: auto !important;
+            align-items: flex-start !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
         .swiper-slide {
             height: auto;
+            margin-bottom: 0 !important;
+            margin-top: 0 !important;
             
             .image {
                 height: 70px;
                 display: block;
-                line-height: 1;
+                line-height: 1 !important;
+                margin-bottom: 0 !important;
+                margin-top: 0 !important;
             }
         }
     }
